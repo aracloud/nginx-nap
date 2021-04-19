@@ -12,8 +12,7 @@ RUN yum -y install wget ca-certificates epel-release
 RUN wget -P /etc/yum.repos.d https://cs.nginx.com/static/files/nginx-plus-7.repo
 
 # Install NGINX App Protect:
-RUN yum update \
-    && yum -y install app-protect \
+RUN yum -y install app-protect \
     && yum clean all \
     && rm -rf /var/cache/yum \
     && rm -rf /etc/ssl/nginx
