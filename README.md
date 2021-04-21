@@ -2,7 +2,7 @@
 
 https://docs.nginx.com/nginx-app-protect/admin-guide/install/#docker-deployment
 
-### prep backend and syslog:
+### prep backend and syslog
 
 docker run  -dit --cap-add SYSLOG -p 515:514 -p 515:514/udp --name rsyslog mysyslog
 <br>
@@ -13,7 +13,7 @@ docker run -dit --name dvwa -p 8080:80 aracloud/docker-dvwa
 curl -I http://localhost:8080/login.php
 
 
-### pull nap container build:
+### pull nap container
 
 git clone https://github.com/aracloud/nginx-nap.git
 
