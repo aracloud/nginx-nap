@@ -1,31 +1,21 @@
-# For RHEL ubi7:
-FROM registry.redhat.io/ubi7/ubi
-
-ARG RHEL_ORGANIZATION
-ARG RHEL_ACTIVATION_KEY
+# For CentOS 7:
+FROM centos:7.4.1708
 
 # Download certificate and key from the customer portal (https://my.f5.com)
 # and copy to the build context:
 COPY nginx-repo.crt nginx-repo.key /etc/ssl/nginx/
 
 # Install prerequisite packages:
-RUN yum -y install wget ca-certificates
+RUN yum -y install wget ca-certificates epel-release
 
 # Add NGINX Plus repo to Yum:
 RUN wget -P /etc/yum.repos.d https://cs.nginx.com/static/files/nginx-plus-7.repo
-
-# Enable Yum repositories to pull App Protect dependencies:
-RUN subscription-manager register --org=${RHEL_ORGANIZATION} --activationkey=${RHEL_ACTIVATION_KEY} \
-    && yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional rhel-7-server-optional-rpms \
-    && rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
-    && yum clean all
 
 # Install NGINX App Protect:
 RUN yum -y install app-protect \
     && yum clean all \
     && rm -rf /var/cache/yum \
-    && rm -rf /etc/ssl/nginx \
-    && subscription-manager unregister
+    && rm -rf /etc/ssl/nginx
 
 # Forward request logs to Docker log collector:
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
@@ -33,6 +23,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 
 # Copy configuration files:
 COPY nginx.conf custom_log_format.json /etc/nginx/
-COPY entrypoint.sh /root/
+COPY entrypoint.sh  /root/
 
 CMD ["sh", "/root/entrypoint.sh"]
+
