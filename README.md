@@ -19,6 +19,7 @@ git clone https://github.com/aracloud/nginx-nap.git
 
 cd nginx-nap
 
+!!! Evaluation keys are required !!!
 !!! Eval keys nginx-repo.crt / nginx-repo.key !!!
 
 cat nginx.conf
